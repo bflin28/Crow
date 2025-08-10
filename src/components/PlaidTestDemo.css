@@ -1,0 +1,283 @@
+.plaid-test-demo {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.demo-header h2 {
+  margin: 0 0 8px 0;
+  color: #374151;
+}
+
+.demo-header p {
+  color: #6b7280;
+  margin: 0;
+}
+
+.flow-progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding: 0 20px;
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.progress-step:not(:last-child):after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -50%;
+  width: calc(100% - 20px);
+  height: 2px;
+  background: #e5e7eb;
+  z-index: 0;
+}
+
+.progress-step.completed:not(:last-child):after {
+  background: #10b981;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-step.active .step-number {
+  background: #3b82f6;
+  color: white;
+}
+
+.progress-step.completed .step-number {
+  background: #10b981;
+  color: white;
+}
+
+.flow-step {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+  min-height: 300px;
+}
+
+.step-screenshot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screenshot-placeholder {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  border: 2px solid #d1d5db;
+}
+
+.step-content h3 {
+  margin: 0 0 8px 0;
+  color: #1f2937;
+  font-size: 20px;
+}
+
+.step-description {
+  color: #6b7280;
+  margin: 0 0 24px 0;
+  font-size: 16px;
+}
+
+.step-details h4 {
+  margin: 0 0 12px 0;
+  color: #374151;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.step-details ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.step-details li {
+  margin-bottom: 8px;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.test-credentials {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.test-credentials h4 {
+  margin: 0 0 12px 0;
+  color: #92400e;
+}
+
+.credential-box {
+  background: white;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.credential {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.credential:last-child {
+  margin-bottom: 0;
+}
+
+.credential strong {
+  min-width: 80px;
+  color: #374151;
+}
+
+.credential code {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.credential code:hover {
+  background: #e5e7eb;
+}
+
+.credential-box small {
+  color: #6b7280;
+  font-size: 12px;
+  display: block;
+  margin-top: 8px;
+}
+
+.flow-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-top: 1px solid #e5e7eb;
+  margin-bottom: 24px;
+}
+
+.nav-button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.nav-button:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.nav-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.step-counter {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.quick-links {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.quick-links h4 {
+  margin: 0 0 12px 0;
+  color: #374151;
+}
+
+.links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.links a {
+  background: white;
+  color: #3b82f6;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #3b82f6;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.links a:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .flow-step {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .screenshot-placeholder {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+  
+  .flow-progress {
+    padding: 0 10px;
+  }
+  
+  .step-number {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}
