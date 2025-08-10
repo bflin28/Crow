@@ -1,0 +1,207 @@
+.payment-method-selector {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.payment-method-selector h3 {
+  text-align: center;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.payment-amount {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 32px;
+}
+
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+  position: relative;
+}
+
+.payment-option:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.payment-option.recommended {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.payment-option.recommended:hover {
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.option-icon {
+  font-size: 32px;
+  margin-right: 16px;
+}
+
+.option-content h4 {
+  margin: 0 0 4px 0;
+  color: #374151;
+}
+
+.option-content p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.recommended-badge {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: #10b981;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.bank-payment-flow,
+.crypto-payment-flow {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.bank-payment-flow h3,
+.crypto-payment-flow h3 {
+  text-align: center;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.bank-connection-step {
+  text-align: center;
+  margin: 32px 0;
+}
+
+.bank-payment-step {
+  margin: 32px 0;
+}
+
+.connected-account {
+  background: #f0fdf4;
+  border: 1px solid #10b981;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.connected-account h4 {
+  margin: 0 0 8px 0;
+  color: #059669;
+}
+
+.connected-account p {
+  margin: 4px 0;
+  color: #374151;
+}
+
+.account-type {
+  font-size: 14px;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+.payment-info {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.info-text {
+  margin: 0;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.initiate-payment-button {
+  width: 100%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.initiate-payment-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.initiate-payment-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.crypto-pay-button {
+  width: 100%;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  border: none;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 24px 0;
+}
+
+.crypto-pay-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+}
+
+.back-button {
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background: #f9fafb;
+  color: #374151;
+}
+
+.crypto-info {
+  margin: 24px 0;
+  text-align: center;
+}
