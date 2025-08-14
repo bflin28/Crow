@@ -4,8 +4,7 @@ import EscrowRequestForm from './components/EscrowRequestForm'
 import HowItWorks from './components/HowItWorks'
 import MyAccount from './components/MyAccount'
 import Authentication from './components/Authentication'
-import Web3Modal from './components/Web3Modal'
-import { Web3Provider } from './contexts/Web3Context'
+import { AppProvider } from './contexts/AppContext'
 
 function App(): React.JSX.Element {
   const [showRequestForm, setShowRequestForm] = useState(false)
@@ -21,7 +20,7 @@ function App(): React.JSX.Element {
   }
 
   return (
-    <Web3Provider>
+    <AppProvider>
       <div className="app">
         <header className="app-header">
           <div className="logo-container">
@@ -74,7 +73,7 @@ function App(): React.JSX.Element {
               <h2>Safe & Secure Escrow Services</h2>
               <p>
                 Whether you're buying or selling, Crow protects both parties with 
-                blockchain-powered smart contract escrow. Both buyer and seller 
+                secure escrow services. Both buyer and seller 
                 must approve before any transaction is executed.
               </p>
             </div>
@@ -101,7 +100,7 @@ function App(): React.JSX.Element {
             <div className="features">
               <div className="feature">
                 <h3>🔒 Secure</h3>
-                <p>Smart contracts ensure funds are protected</p>
+                <p>Your funds are protected throughout the transaction</p>
               </div>
               <div className="feature">
                 <h3>🤝 Bilateral</h3>
@@ -130,11 +129,9 @@ function App(): React.JSX.Element {
             onBack={resetAllViews}
           />
         )}
-      </main>
-      
-      <Web3Modal />
-    </div>
-    </Web3Provider>
+        </main>
+      </div>
+    </AppProvider>
   )
 }
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import './EscrowRequestForm.css'
 import { CURRENCIES, USER_ROLES, CURRENCY_CONFIG } from '../constants'
-import { useWeb3Context } from '../contexts/Web3Context'
-import { useEscrow } from '../hooks/useWeb3'
+import { useAppContext } from '../contexts/AppContext'
+import { useEscrow } from '../hooks/useEscrow'
 
 interface EscrowRequestFormProps {
   onCancel: () => void;
@@ -25,7 +25,7 @@ interface FormErrors {
 }
 
 const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
-  const { requireConnection, account } = useWeb3Context()
+  const { user } = useAppContext()
   const { createEscrow, loading: escrowLoading, error: escrowError } = useEscrow()
   
   const [formData, setFormData] = useState<FormData>({
@@ -33,7 +33,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
     productTitle: '',
     productDescription: '',
     price: '',
-    currency: 'ETH', // Changed to ETH as default for smart contracts
+    currency: 'USD', // Changed to USD for Plaid integration
     counterpartyEmail: '',
     deliveryAddress: '',
     estimatedDeliveryDays: '',
@@ -42,13 +42,13 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
 
   const [errors, setErrors] = useState<FormErrors>({})
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
       [name]: value
     }))
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -59,7 +59,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
   }
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors: FormErrors = {}
 
     if (!formData.productTitle.trim()) {
       newErrors.productTitle = 'Product title is required'
@@ -69,7 +69,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
       newErrors.productDescription = 'Product description is required'
     }
     
-    if (!formData.price || formData.price <= 0) {
+    if (!formData.price || parseFloat(formData.price) <= 0) {
       newErrors.price = 'Valid price is required'
     }
     
@@ -85,43 +85,35 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    // Check Web3 connection first
-    if (!requireConnection()) {
-      return
-    }
     
     if (validateForm()) {
       try {
-        // For now, we'll use the current account as both buyer/seller for demo
-        // In production, the counterparty address would come from the email/user lookup
-        const counterpartyAddress = formData.counterpartyEmail === 'demo@example.com' 
-          ? '0x70997970C51812dc3A010C7d01b50e0d17dc79C8' // Demo address from Hardhat
-          : '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC' // Another demo address
-
+        // Use email addresses instead of wallet addresses
+        const userEmail = user?.email || 'current-user@example.com' // In production, get from authentication
+        
         const escrowData = {
-          buyer: formData.initiatorRole === USER_ROLES.BUYER ? account : counterpartyAddress,
-          seller: formData.initiatorRole === USER_ROLES.SELLER ? account : counterpartyAddress,
-          amount: formData.price,
+          buyer: formData.initiatorRole === USER_ROLES.BUYER ? userEmail : formData.counterpartyEmail,
+          seller: formData.initiatorRole === USER_ROLES.SELLER ? userEmail : formData.counterpartyEmail,
+          amount: `$${formData.price}`, // USD amount for Plaid
           productTitle: formData.productTitle,
           productDescription: formData.productDescription,
           deliveryAddress: formData.deliveryAddress,
           estimatedDeliveryDays: parseInt(formData.estimatedDeliveryDays) || 7,
-          ipfsHash: '' // Could store additional metadata here
         }
 
-        console.log('Creating smart contract escrow:', escrowData)
+        console.log('Creating escrow request:', escrowData)
         
         const escrowId = await createEscrow(escrowData)
         
-        alert(`✅ Smart Contract Escrow Created!\nEscrow ID: ${escrowId}\n\nThe counterparty will now need to sign the agreement to activate the escrow.`)
+        alert(`✅ Escrow Request Created!\nEscrow ID: ${escrowId}\n\nThe counterparty will be notified via email and can sign the agreement to activate the escrow.\n\nPayment will be processed through secure bank transfer (no crypto wallet required).`)
         onCancel() // Return to main page
         
       } catch (error) {
         console.error('Failed to create escrow:', error)
-        alert(`❌ Failed to create escrow: ${error.message}`)
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+        alert(`❌ Failed to create escrow: ${errorMessage}`)
       }
     }
   }
@@ -132,8 +124,8 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
         <button className="back-button" onClick={onCancel}>
           ← Back
         </button>
-        <h2>Create New Smart Contract Escrow</h2>
-        <p>This escrow will be secured by blockchain smart contracts. Both parties must sign to activate.</p>
+        <h2>Create New Escrow Request</h2>
+        <p>Create a secure escrow agreement. Both parties must approve before funds are processed via secure bank transfer.</p>
       </div>
 
       {(escrowLoading || escrowError) && (
@@ -141,7 +133,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
           {escrowLoading && (
             <>
               <span className="status-icon">⏳</span>
-              Creating smart contract escrow... Please confirm the transaction in your wallet.
+              Creating escrow request... Please wait while we process your request.
             </>
           )}
           {escrowError && (
@@ -205,7 +197,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
               value={formData.productDescription}
               onChange={handleChange}
               placeholder="Detailed description of the item, condition, model, etc."
-              rows="4"
+              rows={4}
               className={errors.productDescription ? 'error' : ''}
             />
             {errors.productDescription && <span className="error-message">{errors.productDescription}</span>}
@@ -225,6 +217,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
                 step="0.01"
                 className={errors.price ? 'error' : ''}
               />
+              <small className="help-text">💳 Payment will be processed securely via bank transfer (no crypto required)</small>
               {errors.price && <span className="error-message">{errors.price}</span>}
             </div>
             
@@ -236,7 +229,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
                 value={formData.currency}
                 onChange={handleChange}
               >
-                {CURRENCIES.map(currency => (
+                {CURRENCIES.map((currency: string) => (
                   <option key={currency} value={currency}>
                     {CURRENCY_CONFIG[currency].name}
                   </option>
@@ -278,7 +271,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
               value={formData.deliveryAddress}
               onChange={handleChange}
               placeholder="Full delivery address including postal code"
-              rows="3"
+              rows={3}
               className={errors.deliveryAddress ? 'error' : ''}
             />
             {errors.deliveryAddress && <span className="error-message">{errors.deliveryAddress}</span>}
@@ -309,7 +302,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
               value={formData.additionalTerms}
               onChange={handleChange}
               placeholder="Any additional terms, return policy, warranty info, etc."
-              rows="3"
+              rows={3}
             />
           </div>
         </div>
