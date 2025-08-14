@@ -2,12 +2,13 @@
  * Web3 Context Provider for managing blockchain connection state
  */
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import { useWeb3 } from '../hooks/useWeb3';
+import type { Web3ContextType } from '../types/web3';
 
-const Web3Context = createContext();
+const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
-export const useWeb3Context = () => {
+export const useWeb3Context = (): Web3ContextType => {
   const context = useContext(Web3Context);
   if (!context) {
     throw new Error('useWeb3Context must be used within a Web3Provider');
@@ -15,7 +16,7 @@ export const useWeb3Context = () => {
   return context;
 };
 
-export const Web3Provider = ({ children }) => {
+export const Web3Provider = ({ children }: { children: ReactNode }) => {
   const web3Hook = useWeb3();
   const [showWeb3Modal, setShowWeb3Modal] = useState(false);
 

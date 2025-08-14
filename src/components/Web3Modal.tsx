@@ -6,7 +6,7 @@ import React from 'react';
 import './Web3Modal.css';
 import { useWeb3Context } from '../contexts/Web3Context';
 
-const Web3Modal = () => {
+const Web3Modal: React.FC = () => {
   const { showWeb3Modal, setShowWeb3Modal, connect, loading, error, isConnected } = useWeb3Context();
 
   if (!showWeb3Modal) return null;
