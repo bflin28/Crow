@@ -4,12 +4,16 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { web3Service } from '../contracts/web3Service';
+import type { Web3State, EscrowData, EscrowDetails, EscrowHookReturn } from '../types/web3';
 
-export const useWeb3 = () => {
-  const [isConnected, setIsConnected] = useState(false);
-  const [account, setAccount] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+export const useWeb3 = (): Web3State & { 
+  connect: () => Promise<void>; 
+  web3Service: typeof web3Service 
+} => {
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [account, setAccount] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Initialize Web3 connection
   const connect = useCallback(async () => {
@@ -21,7 +25,7 @@ export const useWeb3 = () => {
       setIsConnected(true);
       setAccount(web3Service.getAccount());
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setLoading(false);
     }
@@ -48,7 +52,7 @@ export const useWeb3 = () => {
   // Listen for account changes
   useEffect(() => {
     if (typeof window !== 'undefined' && window.ethereum) {
-      const handleAccountsChanged = (accounts) => {
+      const handleAccountsChanged = (accounts: string[]) => {
         if (accounts.length === 0) {
           setIsConnected(false);
           setAccount(null);
@@ -60,7 +64,9 @@ export const useWeb3 = () => {
       window.ethereum.on('accountsChanged', handleAccountsChanged);
 
       return () => {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        if (window.ethereum) {
+          window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        }
       };
     }
   }, [account]);
@@ -75,11 +81,11 @@ export const useWeb3 = () => {
   };
 };
 
-export const useEscrow = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+export const useEscrow = (): EscrowHookReturn => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const createEscrow = useCallback(async (escrowData) => {
+  const createEscrow = useCallback(async (escrowData: EscrowData): Promise<string> => {
     setLoading(true);
     setError(null);
     
@@ -87,14 +93,14 @@ export const useEscrow = () => {
       const escrowId = await web3Service.createEscrow(escrowData);
       return escrowId;
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
       throw err;
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const signEscrow = useCallback(async (escrowId, role) => {
+  const signEscrow = useCallback(async (escrowId: string, role: 'buyer' | 'seller'): Promise<any> => {
     setLoading(true);
     setError(null);
     
@@ -107,14 +113,14 @@ export const useEscrow = () => {
       }
       return receipt;
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
       throw err;
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const getUserEscrows = useCallback(async (userAddress = null) => {
+  const getUserEscrows = useCallback(async (userAddress: string | null = null): Promise<EscrowDetails[]> => {
     setLoading(true);
     setError(null);
     
@@ -122,14 +128,14 @@ export const useEscrow = () => {
       const escrows = await web3Service.getUserEscrows(userAddress);
       return escrows;
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
       throw err;
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const getEscrow = useCallback(async (escrowId) => {
+  const getEscrow = useCallback(async (escrowId: string): Promise<EscrowDetails> => {
     setLoading(true);
     setError(null);
     
@@ -137,7 +143,7 @@ export const useEscrow = () => {
       const escrow = await web3Service.getEscrow(escrowId);
       return escrow;
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
       throw err;
     } finally {
       setLoading(false);

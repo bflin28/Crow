@@ -1,6 +1,11 @@
+import React from 'react'
 import './HowItWorks.css'
 
-const HowItWorks = ({ onBack }) => {
+interface HowItWorksProps {
+  onBack: () => void;
+}
+
+const HowItWorks: React.FC<HowItWorksProps> = ({ onBack }) => {
   return (
     <div className="how-it-works-container">
       <div className="how-it-works-header">

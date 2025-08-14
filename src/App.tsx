@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import EscrowRequestForm from './components/EscrowRequestForm'
 import HowItWorks from './components/HowItWorks'
@@ -7,7 +7,7 @@ import Authentication from './components/Authentication'
 import Web3Modal from './components/Web3Modal'
 import { Web3Provider } from './contexts/Web3Context'
 
-function App() {
+function App(): React.JSX.Element {
   const [showRequestForm, setShowRequestForm] = useState(false)
   const [showHowItWorks, setShowHowItWorks] = useState(false)
   const [showMyAccount, setShowMyAccount] = useState(false)

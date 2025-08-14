@@ -1,14 +1,34 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import './EscrowRequestForm.css'
 import { CURRENCIES, USER_ROLES, CURRENCY_CONFIG } from '../constants'
 import { useWeb3Context } from '../contexts/Web3Context'
 import { useEscrow } from '../hooks/useWeb3'
 
-const EscrowRequestForm = ({ onCancel }) => {
+interface EscrowRequestFormProps {
+  onCancel: () => void;
+}
+
+interface FormData {
+  initiatorRole: string;
+  productTitle: string;
+  productDescription: string;
+  price: string;
+  currency: string;
+  counterpartyEmail: string;
+  deliveryAddress: string;
+  estimatedDeliveryDays: string;
+  additionalTerms: string;
+}
+
+interface FormErrors {
+  [key: string]: string;
+}
+
+const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
   const { requireConnection, account } = useWeb3Context()
   const { createEscrow, loading: escrowLoading, error: escrowError } = useEscrow()
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     initiatorRole: USER_ROLES.BUYER, // 'buyer' or 'seller'
     productTitle: '',
     productDescription: '',
@@ -20,7 +40,7 @@ const EscrowRequestForm = ({ onCancel }) => {
     additionalTerms: ''
   })
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<FormErrors>({})
 
   const handleChange = (e) => {
     const { name, value } = e.target
