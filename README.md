@@ -1,14 +1,29 @@
-# Crow - Hybrid Crypto/Non-Crypto Web App
+# Crow - Secure Escrow Services
 
-A modern React web application that combines traditional web features with cryptocurrency functionality. Built with React 18 and Vite for optimal performance and developer experience.
+A modern React web application for secure escrow services with traditional payment processing and blockchain state tracking (account abstraction). Built with React 18, TypeScript, and Vite for optimal performance.
 
 ## Features
 
-- Modern React 18 with hooks
-- Vite for fast development and building
-- ESLint for code quality
-- Hot Module Replacement (HMR) for instant updates
-- Hybrid architecture supporting both traditional and crypto features
+- **No Crypto Wallet Required**: Users never see MetaMask prompts or interact with crypto directly
+- **Secure Payment Processing**: Payments handled via traditional bank transfers (Plaid integration planned)
+- **Blockchain State Tracking**: Smart contracts track escrow progress using account abstraction for gas fees
+- **Modern React Architecture**: React 18 with TypeScript, hooks, and context management
+- **Fast Development**: Vite for instant hot reloading
+- **Authentication System**: Secure item authentication by certified experts
+
+## Architecture Overview
+
+### User-Facing Layer
+- Traditional payment processing (bank transfers, ACH)
+- Email-based user identification
+- Web-based authentication flow
+- No cryptocurrency wallet interaction
+
+### Backend Layer (Account Abstraction)
+- Smart contracts deployed and managed by backend
+- Gas fees paid by service (not users)
+- Blockchain used only for transparent state tracking
+- Users identified by email, not wallet addresses
 
 ## Getting Started
 
