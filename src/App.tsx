@@ -5,6 +5,7 @@ import HowItWorks from './components/HowItWorks'
 import MyAccount from './components/MyAccount'
 import Authentication from './components/Authentication'
 import AccountAbstractionDebug from './components/AccountAbstractionDebug'
+import AccountDebug from './components/AccountDebug'
 import { AppProvider } from './contexts/AppContext'
 
 function App(): React.JSX.Element {
@@ -132,7 +133,8 @@ function App(): React.JSX.Element {
         )}
         </main>
         
-        {/* Debug panel for development */}
+        {/* Debug panels for development */}
+        <AccountDebug />
         <AccountAbstractionDebug />
       </div>
     </AppProvider>
