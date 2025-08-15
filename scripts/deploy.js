@@ -1,5 +1,4 @@
 import hre from "hardhat";
-import fs from 'fs';
 
 async function main() {
   // Get the contract factory
@@ -22,7 +21,7 @@ async function main() {
   console.log("CrowEscrow deployed to:", contractAddress);
   console.log("Authenticator address:", deployer.address);
   
-  // Save deployment info to a file for frontend use
+  // Save deployment info to a file for reference (optional)
   const deploymentInfo = {
     contractAddress: contractAddress,
     network: hre.network.name,
@@ -31,12 +30,8 @@ async function main() {
     timestamp: new Date().toISOString()
   };
   
-  fs.writeFileSync(
-    './src/contracts/deployment.json', 
-    JSON.stringify(deploymentInfo, null, 2)
-  );
-  
-  console.log("Deployment info saved to src/contracts/deployment.json");
+  console.log("Deployment info:", deploymentInfo);
+  console.log("Note: With account abstraction, contracts are deployed dynamically per escrow");
 }
 
 main()
