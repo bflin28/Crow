@@ -181,6 +181,35 @@ class EscrowService {
   }
 
   /**
+   * Get all escrows (for admin purposes or account service)
+   */
+  async getAllEscrows(): Promise<EscrowDetails[]> {
+    try {
+      const allEscrows: EscrowDetails[] = [];
+      
+      for (const [, escrow] of this.escrowStorage) {
+        // Try to update with on-chain data
+        try {
+          if (escrow.contractAddress) {
+            const contractState = await accountAbstractionService.getContractState(escrow.contractAddress);
+            escrow.state = contractState.status;
+            escrow.stateText = ESCROW_STATES[contractState.status] || 'Unknown';
+            escrow.statusForUI = this.getStatusForUI(contractState.status);
+          }
+        } catch (error) {
+          console.warn('Could not read contract state for escrow:', escrow.id);
+        }
+        allEscrows.push(escrow);
+      }
+
+      return allEscrows;
+    } catch (error) {
+      console.error('Failed to get all escrows:', error);
+      throw new Error('Failed to load escrows.');
+    }
+  }
+
+  /**
    * Get user escrows by email
    */
   async getUserEscrows(userEmail: string): Promise<EscrowDetails[]> {

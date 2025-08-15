@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './EscrowRequestForm.css'
 import { CURRENCIES, USER_ROLES, CURRENCY_CONFIG } from '../constants'
-import { useAppContext } from '../contexts/AppContext'
+import { accountService } from '../services/accountService'
 import { useEscrow } from '../hooks/useEscrow'
 
 interface EscrowRequestFormProps {
@@ -25,8 +25,8 @@ interface FormErrors {
 }
 
 const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
-  const { user } = useAppContext()
   const { createEscrow, loading: escrowLoading, error: escrowError } = useEscrow()
+  const currentAccount = accountService.getCurrentAccount()
   
   const [formData, setFormData] = useState<FormData>({
     initiatorRole: USER_ROLES.BUYER, // 'buyer' or 'seller'
@@ -90,8 +90,8 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
     
     if (validateForm()) {
       try {
-        // Use email addresses instead of wallet addresses
-        const userEmail = user?.email || 'current-user@example.com' // In production, get from authentication
+        // Use email from account service
+        const userEmail = currentAccount.email
         
         const escrowData = {
           buyer: formData.initiatorRole === USER_ROLES.BUYER ? userEmail : formData.counterpartyEmail,
