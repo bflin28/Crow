@@ -107,7 +107,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
         
         const escrowId = await createEscrow(escrowData)
         
-        alert(`✅ Escrow Request Created!\nEscrow ID: ${escrowId}\n\nThe counterparty will be notified via email and can sign the agreement to activate the escrow.\n\nPayment will be processed through secure bank transfer (no crypto wallet required).`)
+        alert(`✅ Escrow Request Created!\nEscrow ID: ${escrowId}\n\nA smart contract has been deployed to track this escrow securely. The counterparty will be notified via email and can sign the agreement to activate the escrow.\n\nPayment will be processed through secure bank transfer (no crypto wallet required by users).`)
         onCancel() // Return to main page
         
       } catch (error) {
@@ -133,7 +133,7 @@ const EscrowRequestForm: React.FC<EscrowRequestFormProps> = ({ onCancel }) => {
           {escrowLoading && (
             <>
               <span className="status-icon">⏳</span>
-              Creating escrow request... Please wait while we process your request.
+              Deploying smart contract... Our backend is handling all blockchain interactions securely.
             </>
           )}
           {escrowError && (

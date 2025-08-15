@@ -4,6 +4,7 @@ import EscrowRequestForm from './components/EscrowRequestForm'
 import HowItWorks from './components/HowItWorks'
 import MyAccount from './components/MyAccount'
 import Authentication from './components/Authentication'
+import AccountAbstractionDebug from './components/AccountAbstractionDebug'
 import { AppProvider } from './contexts/AppContext'
 
 function App(): React.JSX.Element {
@@ -130,6 +131,9 @@ function App(): React.JSX.Element {
           />
         )}
         </main>
+        
+        {/* Debug panel for development */}
+        <AccountAbstractionDebug />
       </div>
     </AppProvider>
   )

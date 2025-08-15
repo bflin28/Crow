@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "blockchain": "hardhat node",
+    "dev:full": "concurrently \"npm run blockchain\" \"npm run dev\""
   },
   "dependencies": {
     "ethers": "^6.15.0",
